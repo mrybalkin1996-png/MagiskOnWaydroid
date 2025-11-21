@@ -361,6 +361,7 @@ jobs:
       - name: Integrate Magisk
         if: ${{ github.event.inputs.root_sol == 'magisk' || github.event.inputs.root_sol == '' }}
         run: |
+          rm -rf linker
           mkdir linker
           mkdir linker/x86_64
           wget -q https://raw.githubusercontent.com/pagkly/MagiskOnWaydroid/main/linker/x86_64/libc.so -O linker/x86_64/libc.so
