@@ -360,7 +360,14 @@ jobs:
           sudo mkdir system/system_ext
           sudo mount --bind $(pwd)/system/system/system_ext $(pwd)/system/system_ext
           ls system/system_ext
-          qemu-img convert -O raw ${{ matrix.arch }}/userdata.vhdx userdata.img
+          if [[ -f ${{ matrix.arch }}/userdata.vhdx ]]; then
+            qemu-img convert -O raw ${{ matrix.arch }}/userdata.vhdx userdata.img
+          elif [[ -f ${{ matrix.arch }}/userdata.img ]]; then
+            cp ${{ matrix.arch }}/userdata.img userdata.img
+          else
+            truncate -s 2G userdata.img
+            sudo mkfs.ext4 -F userdata.img
+          fi
           sudo mount -o loop userdata.img userdata
       - name: Integrate Magisk
         if: ${{ github.event.inputs.root_sol == 'magisk' || github.event.inputs.root_sol == '' }}
@@ -574,7 +581,9 @@ jobs:
           sudo mv system/system_ext_ln system/system_ext
           sudo umount system
           sudo umount userdata
-          qemu-img convert -o subformat=dynamic -f raw -O vhdx userdata.img ${{ matrix.arch }}/userdata.vhdx
+          if [[ -f userdata.img ]]; then
+            qemu-img convert -o subformat=dynamic -f raw -O vhdx userdata.img ${{ matrix.arch }}/userdata.vhdx
+          fi
       - name: Shrink images
         run: |
           e2fsck -yf ${{ matrix.arch }}/system.img
