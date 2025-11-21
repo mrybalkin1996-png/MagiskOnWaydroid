@@ -25,7 +25,7 @@ on:
       magisk_apk:
         description: "Magisk version"
         required: true
-        default: "26.1"
+        default: "29.0"
         type: choice
         options:
         - 24.1
@@ -33,6 +33,7 @@ on:
         - 24.3
         - 25.2
         - 26.1
+        - 29.0
         - canary
         - delta
       gapps_variant:
@@ -95,6 +96,9 @@ jobs:
               case "25.2":
                 matrix.magisk_apk = ["25.2"];
                 break;
+              case "29.0":
+                matrix.magisk_apk = ["29.0"];
+                break;
               case "canary":
                 matrix.magisk_apk = ["canary"];
                 break;
@@ -102,7 +106,7 @@ jobs:
                 matrix.magisk_apk = ["delta"];
                 break;
               default:
-                matrix.magisk_apk = ["25.2"];
+                matrix.magisk_apk = ["29.0"];
                 break;
             }
             let gapps_variant = "${{ github.event.inputs.gapps_variant }}"
@@ -134,8 +138,6 @@ jobs:
           sudo rm -rf $HOME/.cache/winetricks
           sudo mkdir -p $HOME/.cache/winetricks/msxml6
           sudo chmod -R 777 $HOME/.cache/winetricks
-          sudo rm -rf $HOME/.wine
-          wineboot -u
           winetricks msxml6
       - name: Download WSA
         shell: python
@@ -227,7 +229,7 @@ jobs:
           magisk_apk = """${{ github.event.inputs.magisk_apk }}"""
           
           if not magisk_apk:
-              magisk_apk = "26.1"
+              magisk_apk = "29.0"
           if magisk_apk == "24.1":
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v24.1/Magisk-v24.1.apk"
           if magisk_apk == "24.2":
@@ -238,6 +240,8 @@ jobs:
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v25.2/Magisk-v25.2.apk"
           if magisk_apk == "26.1":
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.1/Magisk-v26.1.apk"
+          if magisk_apk == "29.0":
+              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v29.0/Magisk-v29.0.apk"
           if magisk_apk == "canary":
               magisk_apk = "https://raw.githubusercontent.com/topjohnwu/magisk-files/canary/app-debug.apk"
           if magisk_apk == "delta":
