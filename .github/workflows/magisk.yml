@@ -134,6 +134,8 @@ jobs:
           sudo rm -rf $HOME/.cache/winetricks
           sudo mkdir -p $HOME/.cache/winetricks/msxml6
           sudo chmod -R 777 $HOME/.cache/winetricks
+          sudo rm -rf $HOME/.wine
+          wineboot -u
           winetricks msxml6
       - name: Download WSA
         shell: python
