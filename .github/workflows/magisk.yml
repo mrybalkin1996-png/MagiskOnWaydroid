@@ -441,7 +441,7 @@ jobs:
           for i in "system/system/etc/init/hw"/*; do
               if [[ "$i" =~ init.zygote.+\.rc ]]; then
                   echo "Inject zygote restart $i"
-                  sudo awk -i inplace '{if($0 ~ /service zygote /){print $0;print "    exec u:r:magisk:s0 0 0 -- /debug_ramdisk/magisk --zygote-restart";a="";next}} 1' "$i"
+                  sudo sed -i '/service zygote /a\    exec u:r:magisk:s0 0 0 -- /debug_ramdisk/magisk --zygote-restart' "$i"
                   sudo setfattr -n security.selinux -v "u:object_r:system_file:s0" "$i" || abort
               fi
           done
