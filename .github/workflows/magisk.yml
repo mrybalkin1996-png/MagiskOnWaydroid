@@ -131,8 +131,8 @@ jobs:
           sudo apt-get update && sudo apt-get install -y setools lzip qemu-utils wine winetricks patchelf attr
           wget -qO- "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/archive/$GITHUB_REF.tar.gz" | sudo tar --wildcards -zxvf- -C ~ --strip-component=2 '*/wine/*' '*/linker/*'
           sudo rm -rf $HOME/.cache/winetricks
-          mkdir -p $HOME/.cache/winetricks/msxml6
-          chmod -R 777 $HOME/.cache/winetricks
+          sudo mkdir -p $HOME/.cache/winetricks/msxml6
+          sudo chmod -R 777 $HOME/.cache/winetricks
           winetricks msxml6
       - name: Download WSA
         shell: python
