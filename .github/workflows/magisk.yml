@@ -129,7 +129,7 @@ jobs:
         run: |
           pip3 install --break-system-packages beautifulsoup4 lxml
           sudo dpkg --add-architecture i386
-          sudo apt-get update && sudo apt-get install -y setools lzip qemu-utils wine winetricks patchelf attr
+          sudo apt-get update && sudo apt-get install -y setools lzip qemu-utils wine winetricks wine32:i386 patchelf attr
           wget -qO- "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/archive/$GITHUB_REF.tar.gz" | sudo tar --wildcards -zxvf- -C ~ --strip-component=2 '*/wine/*' '*/linker/*'
           sudo rm -rf $HOME/.cache/winetricks
           sudo mkdir -p $HOME/.cache/winetricks/msxml6
