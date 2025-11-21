@@ -338,6 +338,11 @@ jobs:
           resize2fs ${{ matrix.arch }}/vendor.img 512M
       - name: Mount images
         run: |
+          sudo umount -lf system/vendor 2>/dev/null || true
+          sudo umount -lf system/product 2>/dev/null || true
+          sudo umount -lf system/system_ext 2>/dev/null || true
+          sudo umount -lf system 2>/dev/null || true
+          sudo umount -lf userdata 2>/dev/null || true
           sudo rm -rf system userdata
           sudo mkdir system
           sudo mkdir userdata
