@@ -338,6 +338,7 @@ jobs:
           resize2fs ${{ matrix.arch }}/vendor.img 512M
       - name: Mount images
         run: |
+          sudo rm -rf system userdata
           sudo mkdir system
           sudo mkdir userdata
           sudo mount -o loop ${{ matrix.arch }}/system.img system
