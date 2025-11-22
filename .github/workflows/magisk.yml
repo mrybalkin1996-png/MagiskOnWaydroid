@@ -265,14 +265,23 @@ jobs:
               info = zip.getinfo(name)
               info.filename = as_name
               zip.extract(info, dir)
+
+          def extract_first(zip, candidates, as_name, dir):
+              for candidate in candidates:
+                  try:
+                      extract_as(zip, candidate, as_name, dir)
+                      return
+                  except KeyError:
+                      continue
+              raise KeyError(f"None of {candidates} found in Magisk APK")
               
           # changes to standalone_policy since v24.3
           # extract_as(zip, f"lib/{ abi_map[arch][0] }/libmagiskinit.so", "magiskpolicy", "magisk")
           # extract_as(zip, f"lib/{ abi_map['x64'][0] }/libmagiskinit.so", "magiskpolicy", ".")
               
           with zipfile.ZipFile(out_file) as zip:
-              extract_as(zip, f"lib/{ abi_map[arch][0] }/libmagisk64.so", "magisk64", "magisk")
-              extract_as(zip, f"lib/{ abi_map[arch][1] }/libmagisk32.so", "magisk32", "magisk")
+              extract_first(zip, [f"lib/{ abi_map[arch][0] }/libmagisk64.so", f"lib/{ abi_map[arch][0] }/libmagisk.so"], "magisk64", "magisk")
+              extract_first(zip, [f"lib/{ abi_map[arch][1] }/libmagisk32.so", f"lib/{ abi_map[arch][1] }/libmagisk.so"], "magisk32", "magisk")
               standalone_policy = False
               try:
                 zip.getinfo(f"lib/{ abi_map[arch][0] }/libmagiskpolicy.so")
